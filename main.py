@@ -1,10 +1,13 @@
 from fastapi import FastAPI, Request
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
+from fastapi.staticfiles import StaticFiles
 import pandas as pd
 import plotly.express as px
 
 app = FastAPI()
+
+app.mount("/static", StaticFiles(directory="static"), name="static")
 
 # Charger le dataset
 df = pd.read_csv("updated_cancerSEER.csv")
@@ -94,3 +97,11 @@ def home(request: Request):
         },
     )
 
+@app.get("/context", response_class=HTMLResponse)
+def context(request: Request):
+    return templates.TemplateResponse("context.html", {"request": request})
+
+
+@app.get("/ml-model", response_class=HTMLResponse)
+def context(request: Request):
+    return templates.TemplateResponse("ml-model.html", {"request": request})
