@@ -22,9 +22,37 @@ L'objectif principal de ce projet est de démontrer comment les approches analyt
 3. **Modélisation prédictive** : Appliquer des techniques de machine learning pour prédire les réponses aux traitements et la survie des patients.
 4. **Interprétation des résultats** : Traduire les insights en recommandations concrètes pour la gestion des patients atteints de cancer.
 
-## Installation
+## Architecture du Projet
 
-...
+Le projet repose sur une architecture modulaire basée sur **FastAPI**, un framework web moderne et performant pour Python. 
+
+- **Backend** : Développé avec **FastAPI**, offrant des endpoints RESTful pour interagir avec les données et les modèles de machine learning.
+- **Dossier `templates`** : Contient les fichiers HTML pour l'interface utilisateur (le cas échéant).
+- **Dossier `static`** : Contient les fichiers JS et CSS.
+
+## Installation et Démarrage
+
+Pour exécuter ce projet localement, suivez les étapes ci-dessous :
+
+1. Clonez le dépôt :
+   ```bash
+   git clone https://github.com/TayebMoha/ProjetCancer.git
+   cd ProjetPSID
+   ```
+
+2. Installez les dépendances :
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+3. Lancez le serveur FastAPI :
+   ```bash
+   python -m uvicorn main:app --reload
+   ```
+
+4. Accédez à la documentation interactive générée automatiquement par FastAPI :
+   - [Swagger UI](http://127.0.0.1:8000/docs)
+   - [Redoc](http://127.0.0.1:8000/redoc)
 
 ## Auteurs
 
@@ -35,4 +63,3 @@ L'objectif principal de ce projet est de démontrer comment les approches analyt
 ## Licence
 
 Ce projet est sous licence [Apache 2.0](https://www.apache.org/licenses/LICENSE-2.0), offrant liberté d'utilisation et de distribution.
-
