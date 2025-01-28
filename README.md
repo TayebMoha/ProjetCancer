@@ -13,18 +13,37 @@ Ce projet s'inscrit dans cette dynamique, en mettant à profit les avancées en 
 - **Analyser les facteurs influençant** la survie et la réponse aux traitements.
 - **Automatiser l'analyse des données** afin d'améliorer la précision et l'efficacité des diagnostics.
 
-## Objectifs
+## Architecture du Projet
 
-L'objectif principal de ce projet est de démontrer comment les approches analytiques et prédictives peuvent transformer les données brutes en connaissances exploitables. Pour cela, les étapes suivantes sont mises en œuvre :
+Le projet repose sur une architecture modulaire basée sur **FastAPI**, un framework web moderne et performant pour Python. 
 
-1. **Exploration et préparation des données** : Identifier et traiter les données pertinentes, tout en assurant leur qualité.
-2. **Analyse des données** : Réaliser des visualisations descriptives et détecter des patterns utiles.
-3. **Modélisation prédictive** : Appliquer des techniques de machine learning pour prédire les réponses aux traitements et la survie des patients.
-4. **Interprétation des résultats** : Traduire les insights en recommandations concrètes pour la gestion des patients atteints de cancer.
+- **Backend** : Développé avec **FastAPI**, offrant des endpoints RESTful pour interagir avec les données et les modèles de machine learning.
+- **Dossier `templates`** : Contient les fichiers HTML pour l'interface utilisateur (le cas échéant).
+- **Dossier `static`** : Contient les fichiers JS et CSS.
 
-## Installation
+## Installation et Démarrage
 
-...
+Pour exécuter ce projet localement, suivez les étapes ci-dessous :
+
+1. Clonez le dépôt :
+   ```bash
+   git clone https://github.com/TayebMoha/ProjetCancer.git
+   cd ProjetPSID
+   ```
+
+2. Installez les dépendances :
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+3. Lancez le serveur FastAPI :
+   ```bash
+   python -m uvicorn main:app --reload
+   ```
+
+4. Accédez à la documentation interactive générée automatiquement par FastAPI :
+   - [Swagger UI](http://127.0.0.1:8000/docs)
+   - [Redoc](http://127.0.0.1:8000/redoc)
 
 ## Auteurs
 
@@ -35,4 +54,3 @@ L'objectif principal de ce projet est de démontrer comment les approches analyt
 ## Licence
 
 Ce projet est sous licence [Apache 2.0](https://www.apache.org/licenses/LICENSE-2.0), offrant liberté d'utilisation et de distribution.
-
