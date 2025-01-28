@@ -13,15 +13,6 @@ Ce projet s'inscrit dans cette dynamique, en mettant à profit les avancées en 
 - **Analyser les facteurs influençant** la survie et la réponse aux traitements.
 - **Automatiser l'analyse des données** afin d'améliorer la précision et l'efficacité des diagnostics.
 
-## Objectifs
-
-L'objectif principal de ce projet est de démontrer comment les approches analytiques et prédictives peuvent transformer les données brutes en connaissances exploitables. Pour cela, les étapes suivantes sont mises en œuvre :
-
-1. **Exploration et préparation des données** : Identifier et traiter les données pertinentes, tout en assurant leur qualité.
-2. **Analyse des données** : Réaliser des visualisations descriptives et détecter des patterns utiles.
-3. **Modélisation prédictive** : Appliquer des techniques de machine learning pour prédire les réponses aux traitements et la survie des patients.
-4. **Interprétation des résultats** : Traduire les insights en recommandations concrètes pour la gestion des patients atteints de cancer.
-
 ## Architecture du Projet
 
 Le projet repose sur une architecture modulaire basée sur **FastAPI**, un framework web moderne et performant pour Python. 
