@@ -5,7 +5,7 @@
 
 ## À propos
 
-Dans un monde où les maladies cancéreuses figurent parmi les principales causes de mortalité, les technologies émergentes jouent un rôle essentiel pour mieux comprendre, prévenir et traiter ces pathologies. Les données médicales, lorsqu'elles sont exploitées de manière optimale, offrent des opportunités uniques pour révéler des facteurs de risque, améliorer les traitements et optimiser les résultats cliniques.
+Dans un monde où les maladies cancéreuses figurent parmi les principales causes de mortalité, les technologies émergentes jouent un rôle essentiel pour mieux comprendre, prévenir et traiter ces pathologies. Les données médicales, lorsqu'elles sont exploitées de manière optimale, offrent des opportunités uniques pour révéler des facteurs de risque, améliorer les traitements et optimiser les résultats cliniques. 
 
 Ce projet s'inscrit dans cette dynamique, en mettant à profit les avancées en **Data Analytics** et **Machine Learning**. Il utilise un jeu de données médicales relatif à des patients atteints de cancer pour répondre à plusieurs défis clés : 
 
