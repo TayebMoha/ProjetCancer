@@ -3,6 +3,8 @@ from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 import pandas as pd
+from pydantic import BaseModel
+import random
 import plotly.express as px
 
 app = FastAPI()
@@ -101,7 +103,34 @@ def home(request: Request):
 def context(request: Request):
     return templates.TemplateResponse("context.html", {"request": request})
 
+# Define the expected input format
+class PatientData(BaseModel):
+    Age: int
+    Sex: str  # "Male" or "Female"
+    CancerType: str
+    Race: str
 
-@app.get("/ml-model", response_class=HTMLResponse)
-def context(request: Request):
-    return templates.TemplateResponse("ml-model.html", {"request": request})
+# Dummy prediction endpoint (Replace with actual model later)
+@app.post("/predict/")
+def predict_lifestatus(patient: PatientData):
+    # Placeholder prediction (Random probabilities)
+    prob_alive = round(random.uniform(50, 95), 2)  # Random between 50% and 95%
+    prob_dead = round(100 - prob_alive, 2)  # Complementary probability
+
+    return {
+        "Probability_Alive": prob_alive,
+        "Probability_Dead": prob_dead
+    }
+
+# ML Page route
+@app.get("/ml-model")
+def ml_page(request: Request):
+    # Dummy dropdown values (Replace with actual categories when model is ready)
+    cancer_types = ["Lung Cancer", "Breast Cancer", "Prostate Cancer", "Colon Cancer", "Skin Cancer"]
+    races = ["White", "Black", "Asian", "Hispanic", "Native American", "Other"]
+
+    return templates.TemplateResponse("ml_model.html", {
+        "request": request,
+        "cancer_types": cancer_types,
+        "races": races
+    })
