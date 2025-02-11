@@ -1,23 +1,20 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Prédiction du Statut Vital</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{{ url_for('static', path='/css/ml_model.css') }}">
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>À propos</title>
+  <link rel="stylesheet" href="{{ url_for('static', path='/css/ml_model.css') }}">
 </head>
 <body>
-    <header>
-        Prédiction du Statut Vital
-    </header>
-    <nav>
-        <a href="/">Accueil</a>
-        <a href="/context">Contexte</a>
-        <a href="/ml-model">Modèle ML</a>
-    </nav>
-
+  <header>
+    <h1>Prediction Model</h1> <!-- Fermeture correcte du h1 -->
+  </header>
+  <nav>
+    <a href="/">Accueil</a>
+    <a href="/ml-model">Modèle ML</a>
+    <a href="/dashboard">Dashboard</a>
+  </nav>
     <div class="container">
         <h2>Entrez les informations du patient</h2>
         <form id="prediction-form">
@@ -72,8 +69,9 @@
            <b>Chance de décès:</b> ${data.Probability_Dead}%`;
     });
     </script>
-<footer>
-    © 2025 Projet Data Viz | Tous droits réservés
-</footer>
+
+    <footer>
+        © 2025 Projet Data Viz | Tous droits réservés
+    </footer>
 </body>
 </html>

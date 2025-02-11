@@ -1,11 +1,12 @@
-from fastapi import FastAPI, Request
 from fastapi.responses import HTMLResponse
+import random
+import joblib
+import pandas as pd
+from catboost import CatBoostClassifier
+from fastapi import FastAPI, Request
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
-import pandas as pd
 from pydantic import BaseModel
-import random
-import plotly.express as px
 
 app = FastAPI()
 
@@ -29,7 +30,7 @@ df = process_age_column(df)
 # Configuration des templates
 templates = Jinja2Templates(directory="templates")
 
-@app.get("/", response_class=HTMLResponse)
+@app.get("/dashboard", response_class=HTMLResponse)
 def home(request: Request):
     # Données pour le graphique de répartition par groupe d'âge
     age_group_data = df.groupby(["Age Group", "Sex"]).size().reset_index(name="Count")
@@ -99,35 +100,102 @@ def home(request: Request):
         },
     )
 
-@app.get("/context", response_class=HTMLResponse)
+@app.get("/", response_class=HTMLResponse)
 def context(request: Request):
     return templates.TemplateResponse("context.html", {"request": request})
+
+
+# Load the trained CatBoost model (Using joblib)
+model = joblib.load("best_model.pkl")
+
+# List of expected columns (Ensures correct feature alignment)
+expected_features = [
+    'Age', 'Sex', 'Type_Colorectal', 'Type_Melanome', 'Type_Pancreas', 'Type_Poumons', 'Type_Prostate', 'Type_Sein', 'Race_Asian/Pacific Islander', 'Race_Black', 'Race_Hispanic', 'Race_Native American', 'Race_White'
+]
+
 
 # Define the expected input format
 class PatientData(BaseModel):
     Age: int
     Sex: str  # "Male" or "Female"
-    CancerType: str
-    Race: str
+    CancerType: str  # e.g., "Sein" (Breast Cancer)
+    Race: str  # e.g., "White"
 
-# Dummy prediction endpoint (Replace with actual model later)
+
+# Mapping for categorical encoding
+sex_mapping = {"Male": 1, "Female": 0}
+cancer_mapping = {
+    "Melanome": "Type_Melanome",
+    "Pancreas": "Type_Pancreas",
+    "Poumons": "Type_Poumons",
+    "Prostate": "Type_Prostate",
+    "Sein": "Type_Sein",
+    "Colorectal": "Type_Colorectal"
+}
+race_mapping = {
+    "Black": "Race_Black",
+    "Hispanic": "Race_Hispanic",
+    "Native American": "Race_Native American",
+    "White": "Race_White",
+    "Asian/Pacific Islander": "Race_Asian/Pacific Islander"
+}
+
+
+# Preprocess input data function
+def preprocess_input(data: PatientData):
+    # Initialize an empty row with default values
+    input_data = {col: False for col in expected_features}
+
+    # Assign values based on user input
+    input_data["Age"] = data.Age
+    input_data["Sex"] = sex_mapping.get(data.Sex, 0)  # Default to Female if unknown
+
+    # Activate the corresponding cancer type
+    if data.CancerType in cancer_mapping:
+        input_data[cancer_mapping[data.CancerType]] = True
+
+    # Activate the corresponding race
+    if data.Race in race_mapping:
+        input_data[race_mapping[data.Race]] = True
+
+    # Convert to a DataFrame
+    input_df = pd.DataFrame([input_data])
+
+    return input_df
+
+
 @app.post("/predict/")
 def predict_lifestatus(patient: PatientData):
-    # Placeholder prediction (Random probabilities)
-    prob_alive = round(random.uniform(50, 95), 2)  # Random between 50% and 95%
-    prob_dead = round(100 - prob_alive, 2)  # Complementary probability
+    # Preprocess the input
+    input_df = preprocess_input(patient)
+
+    # Get model's expected feature names
+    model_features = model._feature_names  # ✅ Extract feature names from saved model
+
+    # Ensure input features match the expected order
+    missing_features = set(model_features) - set(input_df.columns)
+    if missing_features:
+        print("Model features:", model._feature_names)  # Print all expected features
+        print("Input Data Columns:", input_df.columns.tolist())  # Print input columns
+        raise ValueError(f"Missing features in input data: {missing_features}")
+
+    # Reorder DataFrame correctly
+    input_df = input_df[model_features]
+
+    # Get probability predictions using CatBoost
+    proba = model.predict_proba(input_df)[0]  # Returns [prob_alive, prob_dead]
 
     return {
-        "Probability_Alive": prob_alive,
-        "Probability_Dead": prob_dead
+        "Probability_Alive": round(proba[0] * 100, 2),  # Convert to percentage
+        "Probability_Dead": round(proba[1] * 100, 2)
     }
 
-# ML Page route
+
+# Route for ML page
 @app.get("/ml-model")
 def ml_page(request: Request):
-    # Dummy dropdown values (Replace with actual categories when model is ready)
-    cancer_types = ["Lung Cancer", "Breast Cancer", "Prostate Cancer", "Colon Cancer", "Skin Cancer"]
-    races = ["White", "Black", "Asian", "Hispanic", "Native American", "Other"]
+    cancer_types = ["Melanome", "Pancreas", "Poumons", "Prostate", "Sein", "Colorectal"]
+    races = ["Black", "Hispanic", "Native American", "White", "Asian/Pacific Islander"]
 
     return templates.TemplateResponse("ml_model.html", {
         "request": request,
